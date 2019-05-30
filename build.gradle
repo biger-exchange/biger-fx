@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+    id 'org.beryx.jlink' version '2.10.4'
+}
+
+apply plugin: "java-library"
+
+group "com.biger"
+version "1.0"
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenLocal()
+    maven {url 'https://biger-exchange.github.io/biger-client/'}
+    mavenCentral()
+}
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
+}
+
+dependencies {
+    implementation group: "com.biger", name: "biger-client-core", version: bigerClientVersion
+    implementation group: "com.biger", name: "biger-client-httpops-httpclient", version: bigerClientVersion
+    implementation "org.bouncycastle:bcprov-jdk15on:1.61"
+    runtime 'org.slf4j:slf4j-simple:1.7.25'
+}
+
+application {
+    mainClassName = 'com.biger.fx.BigerFX'
+    applicationName = 'bigerFx'
+}
+
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages', '--ignore-signing-information']
+    imageName = "bigerFX"
+    launcher{
+        name = 'bigerFX'
+        jvmArgs = []
+    }
+}
